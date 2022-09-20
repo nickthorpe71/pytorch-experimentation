@@ -90,13 +90,17 @@ print(float_16_tensor.dtype)
 print("--- Math Operators ---")
 tensor_a = torch.tensor([[1,2], [3,4]])
 tensor_b = torch.tensor([[5,6], [7,8]])
+
+# basic
 print(f"Add tensor+tensor: {torch.add(tensor_a, tensor_b)}")
 print(f"Add tensor+int: {torch.add(tensor_a, 2)}")
 print(f"Subtract tensor+tensor: {torch.sub(tensor_a, tensor_b)}")
 print(f"Subtract tensor+int: {torch.sub(tensor_a, 2)}")
 print(f"Multiply tensor+tensor: {torch.mul(tensor_a, tensor_b)}")
 print(f"Multiply tensor+int: {torch.mul(tensor_a, 2)}")
-print(f"Divice tensor+tensor: {torch.divide(tensor_a, tensor_b)}")
-print(f"Divice tensor+int: {torch.divide(tensor_a, 2)}")
+print(f"Divide tensor+tensor: {torch.divide(tensor_a, tensor_b)}")
+print(f"Divide tensor+int: {torch.divide(tensor_a, 2)}")
 
+# matrix
+print(f"Multiply tensor+tensor: {torch.matmul(tensor_a, tensor_b)}")
 
