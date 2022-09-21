@@ -1,7 +1,4 @@
 import torch
-# import pandas as pd
-# import numpy as np
-# import matplotlib.pyplot as plt
 
 # Intro to Tensors
 
@@ -101,6 +98,7 @@ print(f"Multiply tensor+int: {torch.mul(tensor_a, 2)}")
 print(f"Divide tensor+tensor: {torch.divide(tensor_a, tensor_b)}")
 print(f"Divide tensor+int: {torch.divide(tensor_a, 2)}")
 
-# matrix
-print(f"Multiply tensor+tensor: {torch.matmul(tensor_a, tensor_b)}")
 
+print("--- Dot Product ---")
+print(f"Multiply tensor+tensor: {torch.matmul(tensor_a, tensor_b)}")
+print(f"Alias for matmul torch.mm(): {torch.mm(tensor_a, tensor_b)}")
