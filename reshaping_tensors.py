@@ -76,3 +76,12 @@ print(y.size())
 x = torch.tensor([1, 2, 3, 4])
 print(torch.unsqueeze(x, 0))
 print(torch.unsqueeze(x, 1))
+
+
+#* Permute
+# returns view (ref) of the original tensor input with its dimensions permuted
+x = torch.randn(2,3,5)
+print(x)
+print(x.size())
+print(torch.permute(x, (2, 0, 1)).size())
+print(torch.permute(x, (2, 0, 1)))
