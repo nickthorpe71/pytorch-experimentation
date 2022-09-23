@@ -13,8 +13,8 @@ x = torch.arange(1., 10.)
 print(x)
 print(x.shape)
 
-# Add an extra dimenstion
-# * The reshape has to be compatable with the original size *
+#* Add an Extra Dimenstion
+#* The reshape has to be compatable with the original size *
 # this will fail because we can't fit a 9 vector into a 1,7 matrix
 # x_reshaped = x.reshape(1,7)
 
@@ -33,3 +33,17 @@ x_reshaped = x.reshape(3,3)
 print(x_reshaped)
 print(x_reshaped.shape)
 
+
+#* Change the View
+x = torch.arange(1., 10.)
+z = x.view(1,9)
+print(x)
+print(z)
+
+# A view is just a reference to a tensor, ∴ changing z will change x 
+z[:, 0] = 5
+print(x)
+print(z)
+
+
+#* Stack tensors
