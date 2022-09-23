@@ -47,3 +47,32 @@ print(z)
 
 
 #* Stack tensors
+x = torch.arange(1., 10.)
+# stack vertically
+x_stacked = torch.stack([x, x ,x, x], dim=0)
+print(x)
+print(x_stacked)
+
+# stack horizontally
+x_stacked = torch.stack([x, x ,x, x], dim=1)
+print(x)
+print(x_stacked)
+
+
+#* Squeeze / Unsqueeze
+# Squeeze
+# removes single dimenstions
+x = torch.zeros(2, 1, 2, 1, 2)
+print(x.size())
+y = torch.squeeze(x)
+print(y.size())
+y = torch.squeeze(x, 0)
+print(y.size())
+y = torch.squeeze(x, 1)
+print(y.size())
+
+# unsqueeze
+# adds a single dimention
+x = torch.tensor([1, 2, 3, 4])
+print(torch.unsqueeze(x, 0))
+print(torch.unsqueeze(x, 1))
