@@ -3,12 +3,12 @@ import numpy as np
 
 # Change np data into torch tensor
 array = np.arange(1.0, 8.0)
-tensor = torch.from_numpy(array) # creates a copy of the original array
+tensor = torch.from_numpy(array)  # creates a copy of the original array
 print(array)
 print(tensor)
 
-# Change torch tensor into np data 
+# Change torch tensor into np data
 tensor = torch.ones(7)
-numpy_tensor = tensor.numpy()
+numpy_tensor = tensor.numpy()  # creates a copy of the original array
 print(tensor)
 print(numpy_tensor)
