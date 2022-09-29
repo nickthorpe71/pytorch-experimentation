@@ -43,6 +43,7 @@ def plot_predictions(train_data=X_train,
     plt.scatter(test_data, predictions, c="r", s=4, labe="Predictions")
     
   plt.legend(prop={"size": 14})
-  plt.show(block=True)
-
+  plt.savefig("output.jpg")
+  
+# How to get plot to render in wsl2: https://stackoverflow.com/questions/43397162/show-matplotlib-plots-and-other-gui-in-ubuntu-wsl1-wsl2
 plot_predictions()
