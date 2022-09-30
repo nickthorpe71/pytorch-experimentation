@@ -1,4 +1,5 @@
 import torch
+from torch import nn
 import matplotlib.pyplot as plt
 
 # Create known parameters
@@ -47,3 +48,16 @@ def plot_predictions(train_data=X_train,
   
 # How to get plot to render in wsl2: https://stackoverflow.com/questions/43397162/show-matplotlib-plots-and-other-gui-in-ubuntu-wsl1-wsl2
 plot_predictions()
+
+class LinearRegressionModel(nn.Module):
+  def __init__(self):
+    super().__init__()
+    self.weights = nn.Parameter(torch.randn(1,
+                                            requires_grad=True,
+                                            dtype=torch.float))
+    self.bias = nn.Parameter(torch.randn(1,
+                                         requires_grad=True,
+                                         dtype=torch.float))
+  
+  def forward(self, x: torch.Tensor) -> torch.Tensor:
+    return self.weights * x + self.bias # this is the linear regression formula
