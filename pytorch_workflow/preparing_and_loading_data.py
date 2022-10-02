@@ -3,6 +3,10 @@ import numpy as np
 from torch import nn
 import matplotlib.pyplot as plt
 
+# Set up code to be device agnostic
+device = "cuda" if torch.cuda.is_available() else "cpu"
+print(f"using device: {device}")
+
 # Create known parameters
 weight = 0.7
 bias = 0.3
