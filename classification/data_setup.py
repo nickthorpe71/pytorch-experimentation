@@ -81,3 +81,13 @@ model_1 = nn.Sequential(
 ).to(device)
 
 print(model_1)
+
+print(model_1.state_dict())
+
+# make predictions
+with torch.inference_mode():
+  untrained_preds = model_1(X_test.to(device))
+print(f"Length of predictions: {len(untrained_preds)}, Shape: {untrained_preds.shape}")
+print(f"Length of test samples: {len(X_test)}, Shape:{X_test.shape}")
+print(f"\nFirst 10 predictions:\n{untrained_preds[:10]}")
+print(f"\nFirst 10 labels:\n{y_test[:10]}")
