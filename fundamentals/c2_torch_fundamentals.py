@@ -1,4 +1,5 @@
 import torch
+import numpy as np
 
 x = torch.ones(2,2, dtype=torch.float16)
 print(x.size())
@@ -31,3 +32,23 @@ print(x)
 y = x.view(16, 1)
 print(y)
 y = x.view(2, 8)
+
+# numpy / torch conversions
+a = torch.ones(5)
+print(a)
+b = a.numpy()
+print(b)
+# a and b both point to the same memory location
+
+c = np.ones(5)
+print(c)
+d = torch.from_numpy(c)
+print(d)
+
+# create a tensor on the gpu
+if torch.cuda.is_available():
+  device = torch.device("cuda")
+  x = torch.ones(5, device=device)
+  # or
+  y = torch.ones(5)
+  y = y.to(device)
