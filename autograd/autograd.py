@@ -18,3 +18,23 @@ z.backward() # will calculate the gradient of z in respect to x
 # Tensors will not have the grad property if "requires_grad=True" is not defined in tensor creation
 print(x.grad)
 
+
+# Three ways to prevent gradients from being tracked
+print(x)
+
+# remove the gradient tracking from x
+x.requires_grad_(False) 
+print(x)
+
+# create a new tensor with the same data but without gradient tracking
+y = x.detach()
+print(y)
+
+# wrap the tensor in a "with torch.no_grad()" block
+with torch.no_grad():
+    y = x + 2
+    print(y) 
+
+
+
+
