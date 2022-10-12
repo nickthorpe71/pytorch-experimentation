@@ -33,7 +33,7 @@ print(y)
 # wrap the tensor in a "with torch.no_grad()" block
 with torch.no_grad():
     y = x + 2
-    print(y) 
+    print(y)
 
 
 
