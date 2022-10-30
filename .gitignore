@@ -9,3 +9,6 @@ venv.bak/
 
 # matplot output
 output.jpg
+
+# Data
+deep_lizz/fashion_mnist/data/
