@@ -2,9 +2,9 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-t = torch.arange(1,5).float()
+t = torch.arange(1, 5).float()
 print(t)
-t = t.reshape(1,1,2,2)
+t = t.reshape(1, 1, 2, 2)
 print(t)
 
 upsample_nearest = nn.Upsample(scale_factor=2, mode='nearest')
