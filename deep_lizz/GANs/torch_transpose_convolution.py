@@ -18,8 +18,6 @@ pt_transconv_layer = nn.ConvTranspose2d(
 )
 
 pt_filter= torch.arange(1,5).reshape(1,1,2,2).float()
-# print(pt_filter)
-
 pt_transconv_layer.weight = nn.Parameter(pt_filter)
 
 t_transconv = pt_transconv_layer(t)
