@@ -4,7 +4,7 @@ import torch.nn as nn
 import torchvision
 import torchvision.transforms as transforms
 # import matplotlib.animation
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 # import numpy as np
 import os
@@ -54,15 +54,15 @@ dataloader = torch.utils.data.DataLoader(
 )
 
 # plot some images from the training set to get a quick visualization
-real_batch = next(iter(dataloader))
-images, labels = real_batch
+# real_batch = next(iter(dataloader))
+# images, labels = real_batch
 
-grid = torchvision.utils.make_grid(images, nrow=10, normalize=True)
+# grid = torchvision.utils.make_grid(images, nrow=10, normalize=True)
 
-plt.figure(figsize=(10, 10))
-plt.axis("off")
-plt.imshow(grid.permute(1, 2, 0))
-plt.savefig('sample.png')
+# plt.figure(figsize=(10, 10))
+# plt.axis("off")
+# plt.imshow(grid.permute(1, 2, 0))
+# plt.savefig('sample.png')
 
 
 def weights_init(module):
@@ -71,6 +71,7 @@ def weights_init(module):
         nn.init.normal_(module.weight.data, 0.0, 0.02)
 
 
+# ------ GENERATOR ------ #
 netG = nn.Sequential(
     nn.ConvTranspose2d(
         in_channels=z_size,
@@ -132,3 +133,6 @@ netG = netG.to(device)
 # apply recursively applies the weights_init function to every
 # PyTorch submodule in the network
 netG.apply(weights_init)
+
+
+# ------ DISCRIMINATOR ------ #
