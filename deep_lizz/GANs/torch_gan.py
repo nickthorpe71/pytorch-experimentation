@@ -1,5 +1,5 @@
 import torch
-# import torch.nn as nn
+import torch.nn as nn
 
 import torchvision
 import torchvision.transforms as transforms
@@ -63,3 +63,72 @@ plt.figure(figsize=(10, 10))
 plt.axis("off")
 plt.imshow(grid.permute(1, 2, 0))
 plt.savefig('sample.png')
+
+
+def weights_init(module):
+    classname = module.__class__.__name__
+    if classname.find('Conv') != -1:
+        nn.init.normal_(module.weight.data, 0.0, 0.02)
+
+
+netG = nn.Sequential(
+    nn.ConvTranspose2d(
+        in_channels=z_size,
+        out_channels=num_g_filters * 8,
+        kernel_size=4,
+        stride=1,
+        padding=0,
+        bias=False
+    ),
+    nn.BatchNorm2d(num_features=num_g_filters * 8),
+    nn.ReLU(inplace=True),
+
+    nn.ConvTranspose2d(
+        in_channels=num_g_filters * 8,
+        out_channels=num_g_filters * 4,
+        kernel_size=4,
+        stride=2,
+        padding=1,
+        bias=False
+    ),
+    nn.BatchNorm2d(num_features=num_g_filters * 4),
+    nn.ReLU(inplace=True),
+
+    nn.ConvTranspose2d(
+        in_channels=num_g_filters * 4,
+        out_channels=num_g_filters * 2,
+        kernel_size=4,
+        stride=2,
+        padding=1,
+        bias=False
+    ),
+    nn.BatchNorm2d(num_features=num_g_filters * 2),
+    nn.ReLU(inplace=True),
+
+    nn.ConvTranspose2d(
+        in_channels=num_g_filters * 2,
+        out_channels=num_g_filters,
+        kernel_size=4,
+        stride=2,
+        padding=1,
+        bias=False
+    ),
+    nn.BatchNorm2d(num_features=num_g_filters),
+    nn.ReLU(inplace=True),
+
+    nn.ConvTranspose2d(
+        in_channels=num_g_filters,
+        out_channels=num_channels,
+        kernel_size=4,
+        stride=2,
+        padding=1,
+        bias=False
+    ),
+    nn.Tanh()
+)
+
+# initialize the generator and apply the weights_init function
+netG = netG.to(device)
+# apply recursively applies the weights_init function to every
+# PyTorch submodule in the network
+netG.apply(weights_init)
