@@ -8,7 +8,8 @@ env.bak/
 venv.bak/
 
 # matplot output
-output.jpg
+*.jpg
+*.png
 
 # Data
 deep_lizz/fashion_mnist/data/

@@ -242,6 +242,12 @@ with torch.no_grad():
 fake_img_grids.append(torchvision.utils.make_grid(
     fixed_fakes, padding=2, normalize=True))
 
+# To display noise images pre trianing
+# plt.figure(figsize=(8, 8))
+# plt.axis("off")
+# plt.imshow(fake_img_grids[0].permute(1, 2, 0))
+# plt.savefig('output.png')
+
 stats = TrainingStatsManager(batches_per_epoch=len(dataloader))
 stats.begin_run()
 
