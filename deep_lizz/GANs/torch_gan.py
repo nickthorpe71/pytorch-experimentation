@@ -249,8 +249,36 @@ for epoch in range(num_epochs):
     stats.begin_epoch()
 
     for batch in dataloader:
-        # Train discriminator
-        # ...
-        # Train generator
-        # ...
-        # Display training stats
+
+        # TRAIN DISCRIMINATOR
+        netD.zero_grad()
+
+        # in each batch, index 0 is the image data
+        # and index 1 is the corrisponding label
+        real_images = batch[0].to(device)
+        real_output = netD(real_images)
+
+        noise = torch.randn(real_images.size(0), z_size, 1, 1).to(device)
+        fake_images = netG(noise)
+        fake_output = netD(fake_images.detach())
+
+        d_loss = discriminator_loss(real_output, fake_output)
+        d_loss.backward()  # calculate gradients
+        d_optimizer.step()  # update weights
+
+        stats.track('real_mean', real_output.mean().item())
+        stats.track('fake_mean1', fake_output.mean().item())
+        stats.track('d_loss', d_loss.item())
+
+        # TRAIN GENERATOR
+        netG.zero_grad()
+        fake_output = netD(fake_images)
+        g_loss = generator_loss(fake_output)
+        g_loss.backward()
+        g_optimizer.step()
+
+        stats.track('g_loss', g_loss.item())
+        stats.track('fake_mean2', fake_output.mean().item())
+        stats.progress.update()
+
+    # Display training stats
