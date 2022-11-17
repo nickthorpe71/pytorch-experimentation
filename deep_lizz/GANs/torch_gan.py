@@ -10,6 +10,8 @@ import torchvision.transforms as transforms
 import os
 # from IPython.display import HTML
 
+from training_stats_manager import TrainingStatsManager
+
 # for consistancy on each run
 torch.manual_seed(1)
 torch.backends.cudnn.benchmark = False
@@ -208,3 +210,47 @@ netD = netD.to(device)
 # apply recursively applies the weights_init function to every
 # PyTorch submodule in the network
 netD.apply(weights_init)
+
+
+# initialize the loss function
+bce_loss = nn.BCELoss()
+
+
+def discriminator_loss(real_output, fake_output):
+    real_loss = bce_loss(real_output, torch.ones_like(real_output))
+    fake_loss = bce_loss(fake_output, torch.zeros_like(fake_output))
+    return real_loss + fake_loss
+
+
+def generator_loss(fake_output):
+    return bce_loss(fake_output, torch.ones_like(fake_output))
+
+
+# initialize the optimizers
+d_optimizer = torch.optim.Adam(netD.parameters(), lr=lr, betas=betas)
+g_optimizer = torch.optim.Adam(netG.parameters(), lr=lr, betas=betas)
+
+# to track training progress
+g_losses = []
+d_losses = []
+
+fixed_noise = torch.randn(64, z_size, 1, 1, device=device)
+fake_img_grids = []
+
+with torch.no_grad():
+    fixed_fakes = netG(fixed_noise).detach().cpu()
+fake_img_grids.append(torchvision.utils.make_grid(
+    fixed_fakes, padding=2, normalize=True))
+
+stats = TrainingStatsManager(batches_per_epoch=len(dataloader))
+stats.begin_run()
+
+for epoch in range(num_epochs):
+    stats.begin_epoch()
+
+    for batch in dataloader:
+        # Train discriminator
+        # ...
+        # Train generator
+        # ...
+        # Display training stats
