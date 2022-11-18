@@ -3,12 +3,10 @@ import torch.nn as nn
 
 import torchvision
 import torchvision.transforms as transforms
-# import matplotlib.animation
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
-# import numpy as np
+import numpy as np
 import os
-# from IPython.display import HTML
 
 from training_stats_manager import TrainingStatsManager
 
@@ -25,7 +23,7 @@ print(device)
 
 # Hyper-parameters
 batch_size = 128
-num_epochs = 5
+num_epochs = 10
 image_size = 64
 num_channels = 1
 z_size = 100
@@ -242,11 +240,11 @@ with torch.no_grad():
 fake_img_grids.append(torchvision.utils.make_grid(
     fixed_fakes, padding=2, normalize=True))
 
-# To display noise images pre trianing
-# plt.figure(figsize=(8, 8))
-# plt.axis("off")
-# plt.imshow(fake_img_grids[0].permute(1, 2, 0))
-# plt.savefig('output.png')
+# Save noise images pre trianing
+plt.figure(figsize=(8, 8))
+plt.axis("off")
+plt.imshow(fake_img_grids[0].permute(1, 2, 0))
+plt.savefig('pre_training.png')
 
 stats = TrainingStatsManager(batches_per_epoch=len(dataloader))
 stats.begin_run()
@@ -310,47 +308,36 @@ for epoch in range(num_epochs):
 stats.end_run()
 
 # Save png of training stats
-# plt.figure(figsize=(10,5))
-# plt.title("Generator and Discriminator Loss")
-# plt.plot(g_losses,label="G")
-# plt.plot(d_losses,label="D")
-# plt.xlabel("Epochs")
-# plt.ylabel("Loss")
-# plt.xticks(ticks=np.arange(len(g_losses)), labels=np.arange(1, len(g_losses)+1))
-# plt.legend()
-# plt.show()
-# plt.savefig('sample.png')
-
-# Animate the results of each epoch
-# fig = plt.figure(figsize=(8,8))
-# plt.axis("off")
-# frames = [
-#     [plt.imshow(grid.permute(1,2,0), animated=True)] for grid in fake_img_grids
-# ]
-# animation = matplotlib.animation.ArtistAnimation(
-#     fig, frames, interval=1000, repeat_delay=1000, blit=True
-# )
-
-# HTML(animation.to_jshtml())
+plt.figure(figsize=(10, 5))
+plt.title("Generator and Discriminator Loss")
+plt.plot(g_losses, label="G")
+plt.plot(d_losses, label="D")
+plt.xlabel("Epochs")
+plt.ylabel("Loss")
+plt.xticks(ticks=np.arange(len(g_losses)),
+           labels=np.arange(1, len(g_losses)+1))
+plt.legend()
+plt.show()
+plt.savefig('gan_training.png')
 
 
 # Save a png of a real and fake image from the last epoch
-# real_batch = next(iter(dataloader))
-# images, labels = real_batch
+real_batch = next(iter(dataloader))
+images, labels = real_batch
 
-# real_grid = torchvision.utils.make_grid(images[:64], nrow=8, normalize=True)
+real_grid = torchvision.utils.make_grid(images[:64], nrow=8, normalize=True)
 
-# plt.figure(figsize=(15,15))
+plt.figure(figsize=(15, 15))
 
-# plt.subplot(1,2,1)
-# plt.axis("off")
-# plt.title("Real Images")
-# plt.imshow(real_grid.permute(1,2,0))
+plt.subplot(1, 2, 1)
+plt.axis("off")
+plt.title("Real Images")
+plt.imshow(real_grid.permute(1, 2, 0))
 
-# plt.subplot(1,2,2)
-# plt.axis("off")
-# plt.title("Fake Images")
-# plt.imshow(fake_img_grids[-1].permute(1,2,0))
+plt.subplot(1, 2, 2)
+plt.axis("off")
+plt.title("Fake Images")
+plt.imshow(fake_img_grids[-1].permute(1, 2, 0))
 
-# plt.show()
-# plt.savefig('sample.png')
+plt.show()
+plt.savefig('gan_result.png')
