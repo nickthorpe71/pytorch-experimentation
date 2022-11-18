@@ -288,3 +288,35 @@ for epoch in range(num_epochs):
         stats.progress.update()
 
     # Display training stats
+    with torch.no_grad():
+        fixed_fakes = netG(fixed_noise).cpu()
+    fake_img_grids.append(torchvision.utils.make_grid(
+        fixed_fakes, padding=2, normalize=True))
+
+    g_losses.append(sum(stats.epoch_data['g_loss'])/len(dataloader))
+    d_losses.append(sum(stats.epoch_data['d_loss'])/len(dataloader))
+
+    stats.add_result('D loss', sum(stats.epoch_data['d_loss'])/len(dataloader))
+    stats.add_result('G loss', sum(stats.epoch_data['g_loss'])/len(dataloader))
+    stats.add_result('avg D(x)', sum(
+        stats.epoch_data['real_mean'])/len(dataloader))
+    stats.add_result('avg D(G(z)) pre', sum(
+        stats.epoch_data['fake_mean1'])/len(dataloader))
+    stats.add_result('avg D(G(z)) post', sum(
+        stats.epoch_data['fake_mean2'])/len(dataloader))
+
+    stats.end_epoch()
+
+stats.end_run()
+
+# Save png of training stats
+# plt.figure(figsize=(10,5))
+# plt.title("Generator and Discriminator Loss")
+# plt.plot(g_losses,label="G")
+# plt.plot(d_losses,label="D")
+# plt.xlabel("Epochs")
+# plt.ylabel("Loss")
+# plt.xticks(ticks=np.arange(len(g_losses)), labels=np.arange(1, len(g_losses)+1))
+# plt.legend()
+# plt.show()
+# plt.savefig('sample.png')
