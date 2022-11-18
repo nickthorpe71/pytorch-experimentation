@@ -320,3 +320,37 @@ stats.end_run()
 # plt.legend()
 # plt.show()
 # plt.savefig('sample.png')
+
+# Animate the results of each epoch
+# fig = plt.figure(figsize=(8,8))
+# plt.axis("off")
+# frames = [
+#     [plt.imshow(grid.permute(1,2,0), animated=True)] for grid in fake_img_grids
+# ]
+# animation = matplotlib.animation.ArtistAnimation(
+#     fig, frames, interval=1000, repeat_delay=1000, blit=True
+# )
+
+# HTML(animation.to_jshtml())
+
+
+# Save a png of a real and fake image from the last epoch
+# real_batch = next(iter(dataloader))
+# images, labels = real_batch
+
+# real_grid = torchvision.utils.make_grid(images[:64], nrow=8, normalize=True)
+
+# plt.figure(figsize=(15,15))
+
+# plt.subplot(1,2,1)
+# plt.axis("off")
+# plt.title("Real Images")
+# plt.imshow(real_grid.permute(1,2,0))
+
+# plt.subplot(1,2,2)
+# plt.axis("off")
+# plt.title("Fake Images")
+# plt.imshow(fake_img_grids[-1].permute(1,2,0))
+
+# plt.show()
+# plt.savefig('sample.png')
