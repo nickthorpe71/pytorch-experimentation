@@ -1,7 +1,8 @@
 import ijson
 import pandas as pd
 import requests
-import shutil
+import gzip
+import os
 
 
 def get_card_image_urls():
@@ -17,24 +18,62 @@ def get_card_image_urls():
 
 
 def download_card_images_from_urls():
-    df = pd.read_csv("data/scryfall/all_card_cropped_images.csv")
+    # df = pd.read_csv("data/scryfall/all_card_cropped_images.csv")
+    df = pd.read_csv("data/scryfall/all_card_cropped_images_sample.csv")
     for i, row in df.iterrows():
         try:
             response = requests.get(row[1], stream=True)
             if response.status_code == 200:
-                file_name = row[0].strip().replace(" ", "_")
-                for ch in ['\\', '`', '*', '', '{', '}', '[', ']', '(', ')', '>', '#', '+', '-', '.', '!', '$', '\'', '"', '/', ',']:
-                    if ch in text:
-                        text = text.replace(ch, "")
-                with open(f"data/scryfall/card_images/cropped/{file_name}.jpg", 'wb') as out_file:
-                    shutil.copyfileobj(response.raw, out_file)
+                file_name = format_name(row[0])
+                save_as_compressed(
+                    response.content, f"data/scryfall/card_images/cropped/{file_name}.gz.jpg")
             else:
                 print("failed to fetch the data")
             del response
         except Exception as e:
             print(e)
-            print(f"failed to fetch the data for {row[0]}")
+            print(
+                f"====== Failed to fetch the data for {row[0]}. See the error above. ======")
 
 
-download_card_images_from_urls()
+def format_name(name):
+    copy = name[:]
+    copy.strip().replace(" ", "_")
+    for ch in ['\\', '`', '*', '', '{', '}', '[', ']', '(', ')', '>', '#', '+', '-', '.', '!', '$', '\'', '"', '/', ',']:
+        if ch in copy:
+            copy = copy.replace(ch, "")
+    return copy
+
+
+def save_as_compressed(data, destination):
+    with gzip.open(destination, 'wb') as f:
+        f.write(data)
+
+
+def load_compressed_image(file_name):
+    with gzip.open(file_name, 'rb') as f:
+        return f.read()
+
+
+# Image size: 626 x 457
+
+# download_card_images_from_urls()
 # get_card_image_urls()
+
+# load all compressed images from given path
+def load_all_compressed_images(path):
+    images = []
+    for file in os.listdir(path):
+        if file.endswith(".gz.jpg"):
+            images.append(load_compressed_image(os.path.join(path, file)))
+    return images
+
+
+def save_all_images(images, path):
+    for i, image in enumerate(images):
+        with open(os.path.join(path, f"{i}.jpg"), "wb") as f:
+            f.write(image)
+
+
+save_all_images(load_all_compressed_images(
+    "data/scryfall/card_images/cropped"), "data/scryfall/card_images/cropped")
