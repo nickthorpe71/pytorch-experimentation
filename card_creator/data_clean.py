@@ -20,13 +20,13 @@ def get_card_image_urls():
 def download_card_images_from_urls():
     # df = pd.read_csv("data/scryfall/all_card_cropped_images.csv")
     df = pd.read_csv("data/scryfall/all_card_cropped_images_sample.csv")
-    for i, row in df.iterrows():
+    for _, row in df.iterrows():
         try:
             response = requests.get(row[1], stream=True)
             if response.status_code == 200:
                 file_name = format_name(row[0])
                 save_as_compressed(
-                    response.content, f"data/scryfall/card_images/cropped/{file_name}.gz.jpg")
+                    response.content, f"data/scryfall/card_images/cropped/compressed/{file_name}.gz.jpg")
             else:
                 print("failed to fetch the data")
             del response
@@ -38,7 +38,7 @@ def download_card_images_from_urls():
 
 def format_name(name):
     copy = name[:]
-    copy.strip().replace(" ", "_")
+    copy = copy.strip().replace(" ", "_")
     for ch in ['\\', '`', '*', '', '{', '}', '[', ']', '(', ')', '>', '#', '+', '-', '.', '!', '$', '\'', '"', '/', ',']:
         if ch in copy:
             copy = copy.replace(ch, "")
@@ -55,25 +55,25 @@ def load_compressed_image(file_name):
         return f.read()
 
 
-# Image size: 626 x 457
-
-# download_card_images_from_urls()
-# get_card_image_urls()
-
-# load all compressed images from given path
 def load_all_compressed_images(path):
     images = []
     for file in os.listdir(path):
         if file.endswith(".gz.jpg"):
-            images.append(load_compressed_image(os.path.join(path, file)))
+            images.append(
+                [file[:-7], load_compressed_image(os.path.join(path, file))])
     return images
 
 
 def save_all_images(images, path):
-    for i, image in enumerate(images):
-        with open(os.path.join(path, f"{i}.jpg"), "wb") as f:
+    for _, [name, image] in enumerate(images):
+        with open(os.path.join(path, f"{name}.jpg"), "wb") as f:
             f.write(image)
 
 
+# Image size: 626 x 457
+
+# get_card_image_urls()
+
+# download_card_images_from_urls()
 save_all_images(load_all_compressed_images(
-    "data/scryfall/card_images/cropped"), "data/scryfall/card_images/cropped")
+    "data/scryfall/card_images/cropped/compressed"), "data/scryfall/card_images/cropped/full")
