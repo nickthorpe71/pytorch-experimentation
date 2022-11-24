@@ -11,20 +11,27 @@ def get_card_image_urls():
         for record in ijson.items(f, "item"):
             if record["lang"] == "en" and "image_uris" in record:
                 partial_data.append(
-                    {"name": record["name"], "image_url": record["image_uris"]["art_crop"]})
+                    {"id": record["id"], "image_url": record["image_uris"]["art_crop"]})
 
         df = pd.DataFrame(partial_data)
         df.to_csv("data/scryfall/all_card_cropped_images.csv", index=False)
 
 
 def download_card_images_from_urls():
-    # df = pd.read_csv("data/scryfall/all_card_cropped_images.csv")
-    df = pd.read_csv("data/scryfall/all_card_cropped_images_sample.csv")
-    for _, row in df.iterrows():
+    df = pd.read_csv("data/scryfall/all_card_cropped_images.csv")
+    existing_images = get_existing_images(
+        "data/scryfall/card_images/cropped/compressed")
+    total_count = 0
+    new_count = 0
+    for i, row in df.iterrows():
+        total_count += 1
         try:
+            file_name = row[0]
+            if (file_name in existing_images):
+                continue
             response = requests.get(row[1], stream=True)
             if response.status_code == 200:
-                file_name = format_name(row[0])
+                new_count += 1
                 save_as_compressed(
                     response.content, f"data/scryfall/card_images/cropped/compressed/{file_name}.gz.jpg")
             else:
@@ -34,6 +41,17 @@ def download_card_images_from_urls():
             print(e)
             print(
                 f"====== Failed to fetch the data for {row[0]}. See the error above. ======")
+
+    print(
+        f"Attempted {total_count} urls and downloaded {new_count} new images.")
+
+
+def get_existing_images(path):
+    images = []
+    for file in os.listdir(path):
+        if file.endswith(".gz.jpg"):
+            images.append(file[:-7])
+    return images
 
 
 def format_name(name):
@@ -64,7 +82,7 @@ def load_all_compressed_images(path):
     return images
 
 
-def save_all_images(images, path):
+def save_all_images_as_jpgs(images, path):
     for _, [name, image] in enumerate(images):
         with open(os.path.join(path, f"{name}.jpg"), "wb") as f:
             f.write(image)
@@ -74,6 +92,7 @@ def save_all_images(images, path):
 
 # get_card_image_urls()
 
-# download_card_images_from_urls()
-save_all_images(load_all_compressed_images(
-    "data/scryfall/card_images/cropped/compressed"), "data/scryfall/card_images/cropped/full")
+download_card_images_from_urls()
+
+# save_all_images_as_jpgs(load_all_compressed_images(
+#     "data/scryfall/card_images/cropped/compressed"), "data/scryfall/card_images/cropped/full")
