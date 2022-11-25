@@ -92,7 +92,7 @@ def save_all_images_as_jpgs(images, path):
 
 # get_card_image_urls()
 
-download_card_images_from_urls()
+# download_card_images_from_urls()
 
-# save_all_images_as_jpgs(load_all_compressed_images(
-#     "data/scryfall/card_images/cropped/compressed"), "data/scryfall/card_images/cropped/full")
+save_all_images_as_jpgs(load_all_compressed_images(
+    "data/scryfall/card_images/cropped/compressed"), "data/scryfall/card_images/cropped/full/train")
