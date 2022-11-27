@@ -12,8 +12,8 @@ def Discriminator(num_channels, num_d_filters):
         nn.Conv2d(
             in_channels=num_channels,
             out_channels=num_d_filters,
-            kernel_size=3,
-            stride=1,
+            kernel_size=4,
+            stride=2,
             padding=1,
             bias=False
         ),
@@ -22,8 +22,8 @@ def Discriminator(num_channels, num_d_filters):
         nn.Conv2d(
             in_channels=num_d_filters,
             out_channels=num_d_filters * 2,
-            kernel_size=3,
-            stride=1,
+            kernel_size=4,
+            stride=2,
             padding=1,
             bias=False
         ),
@@ -33,8 +33,8 @@ def Discriminator(num_channels, num_d_filters):
         nn.Conv2d(
             in_channels=num_d_filters * 2,
             out_channels=num_d_filters * 4,
-            kernel_size=3,
-            stride=1,
+            kernel_size=4,
+            stride=2,
             padding=1,
             bias=False
         ),
@@ -44,8 +44,8 @@ def Discriminator(num_channels, num_d_filters):
         nn.Conv2d(
             in_channels=num_d_filters * 4,
             out_channels=num_d_filters * 8,
-            kernel_size=3,
-            stride=1,
+            kernel_size=4,
+            stride=2,
             padding=1,
             bias=False
         ),
@@ -55,7 +55,7 @@ def Discriminator(num_channels, num_d_filters):
         nn.Conv2d(
             in_channels=num_d_filters * 8,
             out_channels=1,
-            kernel_size=3,
+            kernel_size=4,
             stride=1,
             padding=0,
             bias=False

@@ -26,7 +26,7 @@ print(device)
 # Hyper-parameters
 batch_size = 128  # 128
 num_epochs = 1
-image_size = 32
+image_size = 64
 num_channels = 3
 z_size = 100
 num_g_filters = image_size
@@ -37,9 +37,6 @@ num_workers = 1
 
 # prep the dataset
 transform = transforms.Compose([
-    # transforms.CenterCrop((458, image_size)),
-    # transforms.Pad((0, 84)),
-    # transforms.Resize(image_size),
     transforms.Resize(image_size),
     transforms.CenterCrop(image_size),
     transforms.ToTensor(),
