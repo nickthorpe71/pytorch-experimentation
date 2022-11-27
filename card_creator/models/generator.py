@@ -1,14 +1,16 @@
 import torch.nn as nn
 
 
-# ------ GENERATOR ------ #
-# As input, the generator accepts batches of noise vectors,
-# each generally referred to as z and of length 100, with values
-# randomly sampled from a normal distribution. The output of the
-# generator is a num_channels x 64 x 64 image. This is an image
-# with num_channels color channels (RGB) with a height and width
-# of 64 pixels.
 def Generator(z_size, num_g_filters, num_channels):
+    """
+      # As input, the generator accepts batches of noise vectors,
+      # each generally referred to as z and of length z_size, with values
+      # randomly sampled from a normal distribution. The output of the
+      # generator is a num_channels x num_g_filters x num_g_filters image. 
+      # This is an image with num_channels color channels (RGB) with a 
+      # height and width of num_g_filters pixels.
+    """
+
     return nn.Sequential(
         nn.ConvTranspose2d(
             in_channels=z_size,
